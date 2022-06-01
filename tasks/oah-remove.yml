@@ -1,0 +1,9 @@
+---
+- name: Uninstall OpenJDk
+  become: yes
+  apt:
+    name: "openjdk-*"
+    state: absent
+    purge: yes
+    autoremove: yes
+    autoclean: yes

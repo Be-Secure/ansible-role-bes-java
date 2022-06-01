@@ -1,0 +1,3 @@
+---
+openjdk_version: 8
+jdk_name: "openjdk-{{ openjdk_version }}-jdk"

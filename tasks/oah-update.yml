@@ -1,0 +1,5 @@
+---
+- name: Update OpenJDK to the latest version
+  apt:
+    name: "{{ jdk_name }}"
+    state: latest
