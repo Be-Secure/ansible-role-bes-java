@@ -7,3 +7,7 @@
     purge: yes
     autoremove: yes
     autoclean: yes
+
+- name: Cleaning up
+  become: yes
+  shell: apt purge --autoremove jdk-*
