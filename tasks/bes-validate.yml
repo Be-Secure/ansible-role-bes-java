@@ -1,0 +1,9 @@
+---
+- name: Validate Installation
+  command: dpkg-query -l "{{ jdk_name }}"
+  register: package_check
+
+- name: Printing validate message
+  debug: 
+    msg: "Package is installed"
+  when: package_check is succeeded
