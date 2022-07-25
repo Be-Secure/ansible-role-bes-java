@@ -13,6 +13,11 @@
     src: "{{ vagrant_home }}/ansible-role-oah-java/defaults/main.yml"
     dest: "{{ role_path }}/defaults/main.yml"
     remote_src: yes
+
+- name: Cleaning up
+  file:
+    path: "{{ vagrant_home }}/ansible-role-oah-java"
+    state: absent
   
 - name: Installing package
   ansible.builtin.include_tasks: oah-install.yml
