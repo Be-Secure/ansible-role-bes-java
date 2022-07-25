@@ -5,13 +5,13 @@
 - name: Getting default conf.
   ansible.builtin.git:
     repo: 'https://github.com/asa1997/ansible-role-oah-java.git'
-    dest: '{{ vagrant_home }}'
+    dest: '{{ vagrant_home }}/ansible-role-oah-java'
     clone: yes
 
 - name: Resetting default conf.
   ansible.builtin.copy:
     src: "{{ vagrant_home }}/ansible-role-oah-java/defaults/main.yml"
-    dest: "{{ role_path }}/ansible-role-oah-java/defaults/main.yml"
+    dest: "{{ role_path }}/defaults/main.yml"
     remote_src: yes
   
 - name: Installing package
