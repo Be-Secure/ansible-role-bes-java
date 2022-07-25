@@ -3,7 +3,8 @@
   command: dpkg-query -l "{{ jdk_name }}"
   register: package_check
 
-- name: Printing validate message
+- name: Message
   debug: 
-    msg: "Package is installed"
+    msg: "Package found"
   when: package_check is succeeded
+  failed_when: package_check.rc == 1
