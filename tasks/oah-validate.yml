@@ -2,9 +2,19 @@
 - name: Validate Installation
   command: dpkg-query -l "{{ jdk_name }}"
   register: package_check
+  ignore_errors: true
+
+- command: java --version
+  register: java_version
+  when: package_check.rc == 0
+
 
 - name: Message
   debug: 
-    msg: "Package found"
-  when: package_check is succeeded
-  failed_when: package_check.rc == 1
+    msg: "Java found - {{ java_version.stdout | regex_search('openjdk [0-9]*.[0-9]*.[0-9]*') }}"
+  when: package_check.rc == 0
+  
+- name: Message
+  debug:
+    msg: "Eclipse not found"
+  when: package_check.rc == 1
