@@ -16,5 +16,5 @@
   
 - name: Message
   debug:
-    msg: "Eclipse not found"
+    msg: "Java not found"
   when: package_check.rc == 1
