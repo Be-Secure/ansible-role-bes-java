@@ -4,7 +4,7 @@
   register: package_check
   ignore_errors: true
 
-- command: java --version
+- command: java -version
   register: java_version
   when: package_check.rc == 0
 
