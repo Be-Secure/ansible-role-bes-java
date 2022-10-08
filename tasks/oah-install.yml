@@ -7,8 +7,8 @@
 
 - name: install openjdk
   apt:
-    name: "{{ jdk_name }}"
-    update_cache: yes
+    name: "openjdk-{{ openjdk_version }}-jdk"
+    update_cache: no
     cache_valid_time: 3600
     state: latest
   become: yes

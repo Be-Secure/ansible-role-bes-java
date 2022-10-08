@@ -1,17 +1,17 @@
 ---
 - include: tasks/oah-install.yml
-  when: bes_command == "install"
+  when: oah_command == "install"
 
 - include: tasks/oah-update.yml
-  when: bes_command == "update"
+  when: oah_command == "update"
 
 - include: tasks/oah-remove.yml
-  when: bes_command == "remove"
+  when: oah_command == "remove"
 
 - include: tasks/oah-reset.yml
-  when: bes_command == "reset"
+  when: oah_command == "reset"
 
 - include: tasks/oah-validate.yml
-  when: bes_command == "validate"
+  when: oah_command == "validate"
 
-#- include: tasks/oah-{{ bes_command }}.yml
+#- include: tasks/oah-{{ oah_command }}.yml
