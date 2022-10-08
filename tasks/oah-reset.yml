@@ -1,22 +1,24 @@
 ---
 - name: Removing package
   ansible.builtin.include_tasks: oah-remove.yml
-  
+
+
+
 - name: Getting default conf.
   ansible.builtin.git:
     repo: 'https://github.com/asa1997/ansible-role-oah-java.git'
-    dest: '{{ vagrant_home }}/ansible-role-oah-java'
+    dest: '{{ java_tmp }}'
     clone: yes
 
 - name: Resetting default conf.
   ansible.builtin.copy:
-    src: "{{ vagrant_home }}/ansible-role-oah-java/defaults/main.yml"
+    src: "{{ java_tmp }}/defaults/main.yml"
     dest: "{{ role_path }}/defaults/main.yml"
     remote_src: yes
 
 - name: Cleaning up
   file:
-    path: "{{ vagrant_home }}/ansible-role-oah-java"
+    path: "{{ java_tmp }}"
     state: absent
   
 - name: Installing package
