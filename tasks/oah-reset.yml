@@ -18,6 +18,7 @@
     remote_src: yes
 
 - name: Cleaning up
+  become: yes
   file:
     path: "{{ java_tmp }}"
     state: absent
