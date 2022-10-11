@@ -1,4 +1,8 @@
 ---
+- name: Running Java version command
+  shell: "java --version"
+  register: java_output
+  failed_when: java_output.stdout.find('Error') != -1
 
 - name: add openjdk repo
   apt_repository:
