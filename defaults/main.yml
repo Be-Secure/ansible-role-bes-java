@@ -1,4 +1,4 @@
 ---
 openjdk_version: 8
 vagrant_home: /home/vagrant
-java_tmp: "{{ vagrant_home }}/java_tmp"
+java_tmp: "{{ home_dir }}/java_tmp"
