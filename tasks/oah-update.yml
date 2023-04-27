@@ -1,0 +1,14 @@
+---
+- name: Removing package
+  ansible.builtin.include_tasks: oah-remove.yml
+
+# - name: Installing package
+#   ansible.builtin.include_tasks: oah-install.yml
+
+- name: Installing latest
+  apt:
+    name: default-jdk
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  become: yes

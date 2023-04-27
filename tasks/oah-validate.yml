@@ -1,0 +1,19 @@
+---
+- name: Validate Installation
+  command: dpkg-query -l "openjdk-{{ openjdk_version }}-jdk"
+  register: package_check
+  ignore_errors: true
+
+- shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+  register: java_version
+  when: package_check.rc == 0
+
+- name: Message
+  debug:
+    msg: "Java found - {{ java_version.stdout }}"  
+  when: package_check.rc == 0
+
+- name: Message
+  debug:
+    msg: "Java not found"
+  when: package_check.rc == 1
