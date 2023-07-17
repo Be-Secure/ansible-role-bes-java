@@ -1,18 +1,74 @@
 ---
-- name: Running Java version command
-  shell: "java --version"
-  register: java_output
-  failed_when: java_output.stdout.find('Error') != -1
+- name: Removing package
+  ansible.builtin.include_tasks: oah-remove.yml
 
-- name: add openjdk repo
-  apt_repository:
-    repo: ppa:openjdk-r/ppa
-  become: yes
-
-- name: install openjdk
+- name: install Openjdk
   apt:
-    name: "openjdk-{{ openjdk_version }}-jdk"
-    update_cache: yes
-    cache_valid_time: 3600
+    name: "openjdk-{{ openjdk_version }}-jdk-headless"
     state: present
   become: yes
+  when: openjdk_version == 8 or openjdk_version == 11 or (openjdk_version > 16 and openjdk_version < 20)
+
+- name: setup Java version
+  become: yes
+  block:
+    - name: Check for Java
+      set_fact:
+        j_var: 36
+      when: ((openjdk_version > 13 and openjdk_version < 17) or openjdk_version == 20)
+
+    - name: Check for Java 12
+      set_fact:
+        j_var: 32
+      when: openjdk_version == 12
+
+    - name: Check for Java 13
+      set_fact:
+        j_var: 33
+      when: openjdk_version == 13
+  
+- name: Setup Java Download url
+  become: yes
+  block:
+    - name: Check for Java {{ openjdk_version }}
+      set_fact:
+        url: https://download.java.net/openjdk/jdk{{ openjdk_version }}/ri/openjdk-{{ openjdk_version }}+{{ j_var }}_linux-x64_bin.tar.gz
+        gz_file: openjdk-{{ openjdk_version }}+{{ j_var }}_linux-x64_bin.tar.gz
+        java_file: jdk-{{ openjdk_version }}
+      when: ((openjdk_version > 11 and openjdk_version < 17) or openjdk_version == 20)
+
+    - name: Check for Java 7
+      set_fact:
+        url: https://download.java.net/openjdk/jdk7u75/ri/openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz
+        gz_file: openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz
+        java_file: java-se-7u75-ri
+      when: openjdk_version == 7
+
+    - name: Check for Java 10
+      set_fact:
+        url: https://download.java.net/openjdk/jdk10/ri/openjdk-10+44_linux-x64_bin_ri.tar.gz
+        gz_file: openjdk-10+44_linux-x64_bin_ri.tar.gz
+        java_file: jdk-{{ openjdk_version }}
+      when: openjdk_version == 10
+ 
+- name: Installing Java
+  become: yes
+  block:
+    - name: Install java 9
+      shell: |
+        rm /tmp/openjdk-*
+        wget -P /tmp/ https://download.java.net/openjdk/jdk9/ri/openjdk-9+181_linux-x64_ri.zip
+        unzip /tmp/openjdk-9+181_linux-x64_ri.zip -d /opt/
+        rm /tmp/openjdk-* 
+        echo 'export JAVA_HOME=/opt/java-se-9-ri/jdk-9' >> /etc/bash.bashrc
+        echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/bash.bashrc
+      when: openjdk_version == 9
+
+    - name: Install Java
+      shell: |
+        wget -P /tmp/ {{ url }}
+        tar -xf /tmp/{{ gz_file }} -C /opt/
+        rm /tmp/openjdk-* 
+        echo 'export JAVA_HOME=/opt/{{ java_file }}' >> /etc/bash.bashrc
+        echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/bash.bashrc
+      when: ((openjdk_version > 11 and openjdk_version < 17) or openjdk_version == 20 or openjdk_version == 10 or openjdk_version == 7)

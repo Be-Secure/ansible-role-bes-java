@@ -1,6 +1,6 @@
 ---
 - name: Validate Installation
-  command: dpkg-query -l "openjdk-{{ openjdk_version }}-jdk"
+  command: java -version
   register: package_check
   ignore_errors: true
 
