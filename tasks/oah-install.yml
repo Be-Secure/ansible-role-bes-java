@@ -25,7 +25,6 @@
 - name: Checking Required OpenJDK Version
   set_fact:
     openjdk_version: "{{ openjdk_version | int }}"
-  when: javac_output.rc == 0
 
 - name: Uninstall existing OpenJDk package
   become: yes
