@@ -49,7 +49,7 @@
     name: "openjdk-{{ openjdk_version }}-jdk-headless"
     state: present
   become: yes
-  when: (javac_output.rc != 0 or (javac_output.rc == 0 and javac_version != openjdk_version)) and (openjdk_version == "8" or openjdk_version == "11" or (openjdk_version | int > 16 and openjdk_version | int < 20))
+  when: (javac_output.rc != 0 or (javac_output.rc == 0 and javac_version != openjdk_version)) and (openjdk_version == "8" or openjdk_version == "11" or openjdk_version == "21" or (openjdk_version | int > 16 and openjdk_version | int < 20))
 
 - name: Preparing Java version
   become: yes
